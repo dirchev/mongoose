@@ -5647,6 +5647,24 @@ describe('document', function() {
       done();
     });
 
+
+    it.only('Allows setting a map propery', function(done) {
+      const schema = new mongoose.Schema({
+        name: String,
+        arrField: [String],
+        mapField: {
+          type: Map,
+          of: String
+        }
+      }, { strict: true });
+
+      const Model = db.model('maptest', schema);
+      const doc = new Model({name: 'something'});
+      doc.arrField.push('a'); // this is OK
+      doc.mapField.set('a', 'a'); // this is throws an error?
+      done();
+    });
+
     it('save() depopulates pushed arrays (gh-6048)', function() {
       const blogPostSchema = new Schema({
         comments: [{
